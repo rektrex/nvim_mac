@@ -12,7 +12,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 Plug 'vimlab/split-term.vim'
 Plug 'nathanalderson/yang.vim'
-Plug 'andreypopp/vim-colors-plain'
+Plug 'glepnir/zephyr-nvim'
 
 call plug#end()
 
@@ -89,11 +89,12 @@ set lazyredraw
 
 "colorscheme
 set termguicolors
+set background=dark
 augroup colorscheme
     autocmd! Colorscheme * highlight Statusline guibg=NONE
+    autocmd! Colorscheme * highlight Normal guibg=NONE
 augroup end
-set background=dark
-colorscheme plain
+colorscheme zephyr
 
 " don't fill EoB with '~'
 let &fcs='eob: '
