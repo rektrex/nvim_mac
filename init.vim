@@ -256,8 +256,6 @@ inoremap {; {<Space><Space>};<Left><Left><Left>
 inoremap [; [<Space><Space>];<Left><Left><Left>
 inoremap (; ();<Left><Left>
 
-nnoremap <silent> <leader>S : call SynGroup()<CR>
-
 set tildeop
 
 "LSP
