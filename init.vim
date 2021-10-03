@@ -285,7 +285,7 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 "Treesitter
 lua << EOF
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "python", "java", "json", "yang" },
+        ensure_installed = { "python", "java", "json", "yang", "yaml" },
         highlight = {
             enable = true,
         },
