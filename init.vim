@@ -8,23 +8,19 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'romainl/vim-cool'
 Plug 'junegunn/vim-easy-align'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/deoplete-lsp'
 Plug 'vimlab/split-term.vim'
 Plug 'nathanalderson/yang.vim'
 Plug 'glepnir/zephyr-nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'ray-x/lsp_signature.nvim'
 
 call plug#end()
 
 "netrw
 let g:netrw_dirhistmax = 0
-
-"deoplete
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-    \ 'camel_case': v:true,
-    \ })
 
 "targets.vim
 autocmd User targets#mappings#user call targets#mappings#extend({
@@ -157,6 +153,7 @@ nnoremap <leader>X "+X
 
 "Autocomplete settings
 set completeopt+=menuone "show completion menu even when there is only one match
+set completeopt+=menu
 set completeopt+=noinsert
 set completeopt+=noselect
 set completeopt-=preview
@@ -290,15 +287,40 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  require "lsp_signature".on_attach({ hint_enable = false })
+  require 'lsp_signature'.on_attach({
+    hint_prefix = ' ',
+    toggle_key = '<C-x>',
+    doc_lines = 0
+  }, bufnr)
 
 end
+
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+mapping = {
+  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  ['<C-Space>'] = cmp.mapping.complete(),
+  ['<C-e>'] = cmp.mapping.close(),
+  ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+  ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+},
+sources = {
+  { name = 'nvim_lsp' },
+  { name = 'buffer' },
+  { name = 'path' },
+}
+})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { 'pylsp' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
