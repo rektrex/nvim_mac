@@ -8,7 +8,6 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'romainl/vim-cool'
 Plug 'junegunn/vim-easy-align'
-Plug 'vimlab/split-term.vim'
 Plug 'nathanalderson/yang.vim'
 Plug 'glepnir/zephyr-nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -30,9 +29,6 @@ autocmd User targets#mappings#user call targets#mappings#extend({
 "vim-easy-align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-"split-term
-let g:disable_key_mappings = v:true
 
 "leader key
 let mapleader="\<Space>"
