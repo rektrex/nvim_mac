@@ -9,12 +9,12 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'romainl/vim-cool'
 Plug 'junegunn/vim-easy-align'
 Plug 'nathanalderson/yang.vim'
-Plug 'glepnir/zephyr-nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'ray-x/lsp_signature.nvim'
+Plug 'projekt0n/github-nvim-theme'
 
 call plug#end()
 
@@ -84,10 +84,9 @@ set lazyredraw
 set termguicolors
 set background=dark
 augroup colorscheme
-    autocmd! Colorscheme * highlight Statusline guibg=NONE
-    autocmd! Colorscheme * highlight Normal guibg=NONE
+    autocmd! Colorscheme * highlight StatusLine guibg=#bcbcbc
 augroup end
-colorscheme zephyr
+colorscheme github_dark
 
 " don't fill EoB with '~'
 let &fcs='eob: '
