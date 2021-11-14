@@ -15,11 +15,15 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'projekt0n/github-nvim-theme'
+Plug 'ellisonleao/glow.nvim'
 
 call plug#end()
 
 "netrw
 let g:netrw_dirhistmax = 0
+
+"glow
+let g:glow_border = "rounded"
 
 "targets.vim
 autocmd User targets#mappings#user call targets#mappings#extend({
