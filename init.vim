@@ -90,6 +90,7 @@ set background=dark
 augroup colorscheme
     autocmd Colorscheme * highlight StatusLineNC guibg=#aa8888
     autocmd Colorscheme * highlight StatusLine guibg=#bcbcbc
+    autocmd Colorscheme * highlight NormalFloat guibg=#1f2428 guifg=#c9d1d9
 augroup end
 colorscheme github_dark
 
@@ -260,9 +261,9 @@ local nvim_lsp = require('lspconfig')
   local opts = { noremap=true, silent=true }
 
   vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
+  vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
