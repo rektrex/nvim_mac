@@ -88,7 +88,8 @@ set lazyredraw
 set termguicolors
 set background=dark
 augroup colorscheme
-    autocmd! Colorscheme * highlight StatusLine guibg=#bcbcbc
+    autocmd Colorscheme * highlight StatusLineNC guibg=#aa8888
+    autocmd Colorscheme * highlight StatusLine guibg=#bcbcbc
 augroup end
 colorscheme github_dark
 
