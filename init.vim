@@ -1,7 +1,6 @@
 "Plugins
 call plug#begin()
 
-Plug 'tpope/vim-commentary'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'wellle/targets.vim'
 Plug 'neovim/nvim-lspconfig'
@@ -16,6 +15,8 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'ellisonleao/glow.nvim'
+Plug 'onsails/diaglist.nvim'
+Plug 'numToStr/Comment.nvim'
 
 call plug#end()
 
@@ -409,3 +410,11 @@ lua << EOF
         },
     }
 EOF
+
+" diaglist
+lua require("diaglist").init()
+nmap <leader>dw <cmd>lua require('diaglist').open_all_diagnostics()<cr>
+nmap <leader>d0 <cmd>lua require('diaglist').open_buffer_diagnostics()<cr>
+
+" Comment.nvim
+lua require('Comment').setup()
