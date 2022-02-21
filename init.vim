@@ -17,6 +17,9 @@ Plug 'projekt0n/github-nvim-theme'
 Plug 'ellisonleao/glow.nvim'
 Plug 'onsails/diaglist.nvim'
 Plug 'numToStr/Comment.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'Pocco81/DAPInstall.nvim'
+Plug 'rcarriga/nvim-dap-ui'
 
 call plug#end()
 
@@ -418,3 +421,21 @@ nmap <leader>d0 <cmd>lua require('diaglist').open_buffer_diagnostics()<cr>
 
 " Comment.nvim
 lua require('Comment').setup()
+
+" DAP
+lua << EOF
+local dap_install = require("dap-install")
+dap_install.config("python", {})
+
+local dap, dapui = require("dap"), require("dapui")
+dapui.setup()
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+EOF
