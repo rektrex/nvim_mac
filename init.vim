@@ -303,12 +303,16 @@ end
 local cmp = require'cmp'
 
 cmp.setup({
+window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+},
 mapping = {
   ['<C-d>'] = cmp.mapping.scroll_docs(-4),
   ['<C-f>'] = cmp.mapping.scroll_docs(4),
   ['<C-Space>'] = cmp.mapping.complete(),
-  ['<C-e>'] = cmp.mapping.close(),
-  ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  ['<C-e>'] = cmp.mapping.abort(),
+  ['<CR>'] = cmp.mapping.confirm({ select = true }),
   ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
   ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
 },
@@ -318,6 +322,7 @@ sources = {
   { name = 'path' },
 }
 })
+
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
