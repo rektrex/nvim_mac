@@ -18,7 +18,7 @@ Plug 'ellisonleao/glow.nvim'
 Plug 'onsails/diaglist.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'mfussenegger/nvim-dap'
-Plug 'Pocco81/DAPInstall.nvim'
+" Plug 'Pocco81/DAPInstall.nvim'
 Plug 'rcarriga/nvim-dap-ui'
 
 call plug#end()
@@ -289,7 +289,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gR', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.format({ async: true })<CR>', opts)
+  buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
   require 'lsp_signature'.on_attach({
     hint_prefix = ' ',
@@ -429,8 +429,8 @@ lua require('Comment').setup()
 
 " DAP
 lua << EOF
-local dap_install = require("dap-install")
-dap_install.config("python", {})
+-- local dap_install = require("dap-install")
+-- dap_install.config("python", {})
 
 local dap, dapui = require("dap"), require("dapui")
 dapui.setup()
