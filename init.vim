@@ -210,7 +210,7 @@ nnoremap <C-h> :silent colder<CR>
 "wisdom from romainl's answer here: https://stackoverflow.com/questions/16082991/vim-switching-between-files-rapidly-using-vanilla-vim-no-plugins
 
 "list all buffers, and wait for input to switch to a buffer
-nnoremap gb :ls<CR>:b<Space>
+nnoremap ,gb :ls<CR>:b<Space>
 
 "find files recursively, under the cwd(todo, follow gitignore)
 set path=.,**
@@ -320,7 +320,7 @@ mapping = {
   ['<C-f>'] = cmp.mapping.scroll_docs(4),
   ['<C-Space>'] = cmp.mapping.complete(),
   ['<C-e>'] = cmp.mapping.abort(),
-  ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  ['<CR>'] = cmp.mapping.confirm({ select = false }),
   ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
   ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
 },
