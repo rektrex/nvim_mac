@@ -20,6 +20,9 @@ Plug 'numToStr/Comment.nvim'
 Plug 'mfussenegger/nvim-dap'
 " Plug 'Pocco81/DAPInstall.nvim'
 Plug 'rcarriga/nvim-dap-ui'
+Plug 'itchyny/vim-haskell-indent'
+Plug 'dcampos/nvim-snippy'
+Plug 'dcampos/cmp-snippy'
 
 call plug#end()
 
@@ -306,6 +309,11 @@ cmp.setup({
 window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
+},
+snippet = {
+    expand = function(args)
+      require('snippy').expand_snippet(args.body)
+      end,
 },
 mapping = {
   ['<C-d>'] = cmp.mapping.scroll_docs(-4),
