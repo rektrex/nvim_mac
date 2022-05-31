@@ -424,6 +424,9 @@ lua << EOF
                 },
             },
         },
+        indent = {
+            enable = true
+        },
     }
 EOF
 
