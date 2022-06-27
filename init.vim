@@ -23,6 +23,8 @@ Plug 'rcarriga/nvim-dap-ui'
 Plug 'itchyny/vim-haskell-indent'
 Plug 'dcampos/nvim-snippy'
 Plug 'dcampos/cmp-snippy'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -425,7 +427,7 @@ lua << EOF
             },
         },
         indent = {
-            enable = true
+            enable = false
         },
     }
 EOF
