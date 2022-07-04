@@ -79,7 +79,7 @@ set noshowmode
 
 set noruler
 
-set laststatus=2
+set laststatus=3
 set statusline=
 set statusline+=\ %t
 set statusline+=%m\ 
