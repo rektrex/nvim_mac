@@ -336,7 +336,7 @@ sources = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pylsp', 'hls' }
+local servers = { 'pylsp', 'hls', 'clangd' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -355,7 +355,7 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 "Treesitter
 lua << EOF
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "c", "python", "java", "json", "yang", "yaml", "haskell" },
+        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell" },
         highlight = {
             enable = true,
         },
