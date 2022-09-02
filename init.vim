@@ -25,6 +25,7 @@ Plug 'dcampos/nvim-snippy'
 Plug 'dcampos/cmp-snippy'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'karb94/neoscroll.nvim'
 
 call plug#end()
 
@@ -473,3 +474,6 @@ imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
 smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>'
 smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
 xmap <Tab> <Plug>(snippy-cut-text)
+
+" neoscroll
+lua require('neoscroll').setup()
