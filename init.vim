@@ -26,6 +26,7 @@ Plug 'dcampos/cmp-snippy'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'karb94/neoscroll.nvim'
+Plug 'windwp/nvim-autopairs'
 
 call plug#end()
 
@@ -250,16 +251,16 @@ nnoremap <silent> <C-p> :Cprev<CR>
 nnoremap <silent> gq :cw<CR>
 
 "minimal auto pairing
-set matchpairs+=<:>
-
-inoremap {<CR> {<CR>}<Esc>O
-inoremap [<CR> [<CR>]<Esc>O
-inoremap (<CR> (<CR>)<Esc>O
-inoremap {<Space> {<Space><Space>}<Left><Left>
-inoremap [<Space> [<Space><Space>]<Left><Left>
-inoremap {; {<Space><Space>};<Left><Left><Left>
-inoremap [; [<Space><Space>];<Left><Left><Left>
-inoremap (; ();<Left><Left>
+" set matchpairs+=<:>
+"
+" inoremap {<CR> {<CR>}<Esc>O
+" inoremap [<CR> [<CR>]<Esc>O
+" inoremap (<CR> (<CR>)<Esc>O
+" inoremap {<Space> {<Space><Space>}<Left><Left>
+" inoremap [<Space> [<Space><Space>]<Left><Left>
+" inoremap {; {<Space><Space>};<Left><Left><Left>
+" inoremap [; [<Space><Space>];<Left><Left><Left>
+" inoremap (; ();<Left><Left>
 
 set tildeop
 
@@ -295,7 +296,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gR', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
 
   require 'lsp_signature'.on_attach({
     hint_prefix = ' ',
@@ -305,8 +306,15 @@ local on_attach = function(client, bufnr)
 
 end
 
--- Setup nvim-cmp.
+-- Setup nvim-autpairs & nvim-cmp.
+require("nvim-autopairs").setup {}
+local cmp_autopairs = require'nvim-autopairs.completion.cmp'
 local cmp = require'cmp'
+
+cmp.event:on(
+    'confirm_done',
+    cmp_autopairs.on_confirm_done()
+)
 
 cmp.setup({
 window = {
@@ -346,7 +354,7 @@ nvim_lsp['clangd'].setup {
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 
-local servers = { 'pylsp', 'hls' }
+local servers = { 'pylsp', 'hls', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -365,7 +373,7 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 "Treesitter
 lua << EOF
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell" },
+        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell", "rust" },
         highlight = {
             enable = true,
         },
