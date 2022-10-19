@@ -339,12 +339,14 @@ sources = {
   { name = 'nvim_lsp' },
   { name = 'buffer' },
   { name = 'path' },
-}
+  { name = 'snippy' },
+},
 })
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 nvim_lsp['clangd'].setup {
   cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
-  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+  capabilities = capabilities,
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 150,
@@ -357,7 +359,7 @@ nvim_lsp['clangd'].setup {
 local servers = { 'pylsp', 'hls', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
