@@ -17,6 +17,7 @@ Plug 'projekt0n/github-nvim-theme'
 Plug 'ellisonleao/glow.nvim'
 Plug 'onsails/diaglist.nvim'
 Plug 'numToStr/Comment.nvim'
+Plug 'nvim-neotest/nvim-nio'
 Plug 'mfussenegger/nvim-dap'
 " Plug 'Pocco81/DAPInstall.nvim'
 Plug 'rcarriga/nvim-dap-ui'
@@ -25,31 +26,33 @@ Plug 'dcampos/nvim-snippy'
 Plug 'dcampos/cmp-snippy'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
 Plug 'karb94/neoscroll.nvim'
 Plug 'windwp/nvim-autopairs'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
 
 call plug#end()
 
-"netrw
+" netrw
 let g:netrw_dirhistmax = 0
 
-"glow
+" glow
 let g:glow_border = "rounded"
 
-"targets.vim
+" targets.vim
 autocmd User targets#mappings#user call targets#mappings#extend({
     \ 'b': {'pair': [{'o':'(', 'c':')'}, {'o':'[', 'c':']'}, {'o':'{', 'c':'}'}, {'o':'<', 'c':'>'}]},
     \ })
 
-"vim-easy-align
+" vim-easy-align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-"leader key
+" leader key
 let mapleader="\<Space>"
 
-"UI ------------------
-
+" UI
 set textwidth=0         "Prevent hard-wrap text
 set wrapmargin=0
 set wrap
@@ -114,26 +117,24 @@ set shortmess+=acW "remove/modify some messages
 
 set signcolumn=no "don't display sign column
 
-"Show next 3 lines while scrolling
+" Show next 3 lines while scrolling
 if !&scrolloff
     set scrolloff=3
 endif
 
-"Show next 5 lines while side scrolling
+" Show next 5 lines while side scrolling
 if !&sidescrolloff
     set sidescrolloff=5
 endif
 
-"Use Ctrl+L to clear the highlighting of hlsearch
+" Use Ctrl+L to clear the highlighting of hlsearch
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 
-"Other ---------------
-
-"Search and replace
+" Search and replace
 nnoremap <leader>h :%s//g<Left><Left>
 xnoremap <leader>h :s//g<Left><Left>
 
-"Indentation rules and use spaces
+" Indentation rules and use spaces
 set autoindent
 set expandtab
 set shiftwidth=4
@@ -150,8 +151,8 @@ set backspace=indent,eol,start
 
 set clipboard+=unnamedplus "Enable xsel clipboard
 
-"sets d => "delete"
-"leader+d => "cut"
+" sets d => "delete"
+" leader+d => "cut"
 nnoremap x "_x
 nnoremap X "_X
 nnoremap d "_d
@@ -163,37 +164,37 @@ xnoremap <leader>d "+d
 nnoremap <leader>x "+x
 nnoremap <leader>X "+X
 
-"Autocomplete settings
+" Autocomplete settings
 set completeopt+=menuone "show completion menu even when there is only one match
 set completeopt+=menu
 set completeopt+=noinsert
 set completeopt+=noselect
 set completeopt-=preview
 
-"Tap jk to escape to normal mode
+" Tap jk to escape to normal mode
 inoremap jk <Esc>`^
 
-"save session
+" save session
 nnoremap <leader>s :mksession<CR>
 
-"persistent undo
+" persistent undo
 set undodir=~/.local/share/nvim/undodir
 set undofile
 
-"json comments syntax highlighting
+" json comments syntax highlighting
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
-"set title of the window
+" set title of the window
 autocmd BufEnter * let &titlestring = ' ' . expand(@%)
 set title
 
-"use ripgrep for grep
+" use ripgrep for grep
 if executable('rg')
     set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-"automatically show quickfix list after grep
+" automatically show quickfix list after grep
 augroup quickfix
     autocmd!
     autocmd QuickFixCmdPost [^l]* cwindow
@@ -201,70 +202,34 @@ augroup quickfix
     autocmd FileType qf nnoremap <silent> <buffer> <CR> <CR>:cclose<CR>
 augroup END
 
-"mapping to do a silent grep
+" mapping to do a silent grep
 nnoremap <leader>g :silent grep!<Space>
 
-"make :cnext and :cprev loop
+" make :cnext and :cprev loop
 command! Cnext try | cnext | catch | cfirst | catch | endtry
 command! Cprev try | cprev | catch | clast | catch | endtry
 
 nnoremap <C-f> :QFilter<Space>
 nnoremap <C-h> :silent colder<CR>
 
-"wisdom from romainl's answer here: https://stackoverflow.com/questions/16082991/vim-switching-between-files-rapidly-using-vanilla-vim-no-plugins
-
-"list all buffers, and wait for input to switch to a buffer
-nnoremap ,gb :ls<CR>:b<Space>
-
-"find files recursively, under the cwd(todo, follow gitignore)
-set path=.,**
-nnoremap <leader>f :find<Space>
-nnoremap <leader>v :vert sfind<Space>
-
-"prune wildmenu completions
-set wildignore=*.swp,*.bak
-set wildignore+=*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*
-set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
-set wildignore+=tags
-set wildignore+=*/target/**/*
-set wildignore+=target/
-set wildignore+=*.tar.*
-
-"ignore case when searching in wildmenu
-set wildignorecase
-
-"end of romainl's wisdom
-
-"move up and down based on display lines
+" move up and down based on display lines
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 
-"move to prev and next buffers, similar to tabs in qutebrowser
+" move to prev and next buffers, similar to tabs in qutebrowser
 nnoremap <silent> <C-j> :bnext<CR>
 nnoremap <silent> <C-k> :bprev<CR>
 
-"move to prev and next items in the quickfix list
+" move to prev and next items in the quickfix list
 nnoremap <silent> <C-n> :Cnext<CR>
 nnoremap <silent> <C-p> :Cprev<CR>
 
-"shortcut to open quickfix list
+" shortcut to open quickfix list
 nnoremap <silent> gq :cw<CR>
-
-"minimal auto pairing
-" set matchpairs+=<:>
-"
-" inoremap {<CR> {<CR>}<Esc>O
-" inoremap [<CR> [<CR>]<Esc>O
-" inoremap (<CR> (<CR>)<Esc>O
-" inoremap {<Space> {<Space><Space>}<Left><Left>
-" inoremap [<Space> [<Space><Space>]<Left><Left>
-" inoremap {; {<Space><Space>};<Left><Left><Left>
-" inoremap [; [<Space><Space>];<Left><Left><Left>
-" inoremap (; ();<Left><Left>
 
 set tildeop
 
-"LSP
+" LSP
 lua << EOF
 local nvim_lsp = require('lspconfig')
 
@@ -366,16 +331,24 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.go',
+  callback = function()
+    vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+  end
+})
+
 EOF
 
-"Terminal mappings
+" Terminal mappings
 tnoremap <Esc> <C-\><C-n>
 tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
-"Treesitter
+" Treesitter
 lua << EOF
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell", "rust" },
+        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell", "rust", "vim", "lua" },
         highlight = {
             enable = true,
         },
@@ -487,3 +460,29 @@ xmap <Tab> <Plug>(snippy-cut-text)
 
 " neoscroll
 lua require('neoscroll').setup()
+
+" telescope-fzf-native
+lua << EOF
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+    }
+  }
+}
+require('telescope').load_extension('fzf')
+EOF
+
+" telescope
+nnoremap <leader>ff <cmd> Telescope find_files<cr>
+nnoremap <leader>fg <cmd> Telescope live_grep<cr>
+nnoremap <leader>fb <cmd> Telescope buffers<cr>
+nnoremap <leader>fh <cmd> Telescope help_tags<cr>
+
+" lualine
+lua << EOF
+require('lualine').setup()
+EOF
