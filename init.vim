@@ -32,6 +32,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 
 call plug#end()
 
@@ -514,4 +515,17 @@ require("copilot").setup({
   panel = { enabled = false },
 })
 require("copilot_cmp").setup()
+require("CopilotChat").setup()
+
+-- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
+require("CopilotChat.integrations.cmp").setup()
+
+-- You might also want to disable default <tab> complete mapping for copilot chat when doing this
+require('CopilotChat').setup({
+  mappings = {
+    complete = {
+      insert = '',
+    },
+  },
+})
 EOF
