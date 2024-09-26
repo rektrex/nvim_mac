@@ -9,8 +9,8 @@ Plug 'romainl/vim-cool'
 Plug 'junegunn/vim-easy-align'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'FelipeLema/cmp-async-path'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'ellisonleao/glow.nvim'
@@ -33,6 +33,7 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'onsails/lspkind-nvim'
 
 call plug#end()
 
@@ -268,7 +269,8 @@ local on_attach = function(client, bufnr)
   require 'lsp_signature'.on_attach({
     hint_prefix = ' ',
     toggle_key = '<C-x>',
-    doc_lines = 0
+    doc_lines = 0,
+    floating_window = false,
   }, bufnr)
 
 end
@@ -283,50 +285,71 @@ cmp.event:on(
     cmp_autopairs.on_confirm_done()
 )
 
+local lspkind = require('lspkind')
 cmp.setup({
-window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-},
-snippet = {
-    expand = function(args)
-      require('snippy').expand_snippet(args.body)
-      end,
-},
-mapping = {
-  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-  ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  ['<C-Space>'] = cmp.mapping.complete(),
-  ['<C-e>'] = cmp.mapping.abort(),
-  ['<CR>'] = cmp.mapping.confirm({ select = false }),
-  ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-  ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-},
-sources = {
-  { name = 'nvim_lsp' },
-  { name = 'buffer' },
-  { name = 'path' },
-  { name = 'snippy' },
-  { name = 'copilot' },
-},
-sorting = {
-priority_weight = 2,
-    comparators = {
-      require("copilot_cmp.comparators").prioritize,
-
-      -- Below is the default comparitor list and order for nvim-cmp
-      cmp.config.compare.offset,
-      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-      cmp.config.compare.exact,
-      cmp.config.compare.score,
-      cmp.config.compare.recently_used,
-      cmp.config.compare.locality,
-      cmp.config.compare.kind,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
+    window = {
+        completion = cmp.config.window.bordered({
+            winhighlight = "Normal:CmpPmenu,FloatBorder:CmpPmenu,CursorLine:PmenuSel,Search:None",
+        }),
+        documentation = cmp.config.window.bordered({
+            winhighlight = "Normal:CmpPmenu,FloatBorder:CmpPmenu,CursorLine:PmenuSel,Search:None",
+        }),
     },
-},
+
+    snippet = {
+        expand = function(args)
+          require('snippy').expand_snippet(args.body)
+          end,
+    },
+
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+      ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    },
+
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'buffer' },
+      { name = 'async_path' },
+      { name = 'snippy' },
+      { name = 'copilot' },
+    },
+
+    sorting = {
+    priority_weight = 2,
+        comparators = {
+          require("copilot_cmp.comparators").prioritize,
+
+          -- Below is the default comparitor list and order for nvim-cmp
+          cmp.config.compare.offset,
+          -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+          cmp.config.compare.exact,
+          cmp.config.compare.score,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.locality,
+          cmp.config.compare.kind,
+          cmp.config.compare.sort_text,
+          cmp.config.compare.length,
+          cmp.config.compare.order,
+        },
+    },
+
+    formatting = {
+        format = lspkind.cmp_format({
+          mode = 'symbol', -- show only symbol annotations
+          maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                         -- can also be a function to dynamically calculate max width such as 
+                         -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+          ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+          show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+          symbol_map = { Copilot = "" },
+        })
+    },
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
