@@ -7,7 +7,6 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'romainl/vim-cool'
 Plug 'junegunn/vim-easy-align'
-Plug 'nathanalderson/yang.vim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -31,6 +30,8 @@ Plug 'karb94/neoscroll.nvim'
 Plug 'windwp/nvim-autopairs'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'zbirenbaum/copilot-cmp'
 
 call plug#end()
 
@@ -305,6 +306,25 @@ sources = {
   { name = 'buffer' },
   { name = 'path' },
   { name = 'snippy' },
+  { name = 'copilot' },
+},
+sorting = {
+priority_weight = 2,
+    comparators = {
+      require("copilot_cmp.comparators").prioritize,
+
+      -- Below is the default comparitor list and order for nvim-cmp
+      cmp.config.compare.offset,
+      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
 },
 })
 
@@ -348,7 +368,7 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 " Treesitter
 lua << EOF
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "c", "cpp", "python", "java", "json", "yang", "yaml", "haskell", "rust", "vim", "lua" },
+        ensure_installed = { "c", "cpp", "python", "java", "json", "yaml", "haskell", "rust", "vim", "lua" },
         highlight = {
             enable = true,
         },
@@ -485,4 +505,13 @@ nnoremap <leader>fh <cmd> Telescope help_tags<cr>
 " lualine
 lua << EOF
 require('lualine').setup()
+EOF
+
+" copilot
+lua << EOF
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
+require("copilot_cmp").setup()
 EOF
